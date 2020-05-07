@@ -1,0 +1,6 @@
+services:
+    GaylordP\PaginatorBundle\Twig\Extension:
+        arguments:
+            - '@twig'
+        tags:
+            - 'twig.extension'

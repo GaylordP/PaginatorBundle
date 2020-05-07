@@ -1,0 +1,66 @@
+{% set attr = attr|default([])|merge({class: (attr.class|default('') ~ ' pagination')|trim}) %}
+{% set route_parameters = route_parameters|default([]) %}
+
+{% if paginator.hasToPaginate %}
+    <nav{% if null != title %} aria-label="{{ title }}"{% endif %}>
+        <ul{% for attrname, attrvalue in attr %}{% if attrvalue is not same as(false) %} {{ attrname }}="{{ attrvalue }}"{% endif %}{% endfor %}>
+            {% if paginator.hasPreviousPage %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ path(route_name, route_parameters|merge(
+                        {
+                            'page': paginator.previousPage,
+                        }
+                    )) }}">
+                        <i class="fas fa-arrow-circle-left"></i>
+                        {{ 'action.previous'|trans({}, 'paginator') }}
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">
+                        <i class="fas fa-arrow-circle-left"></i>
+                        {{ 'action.previous'|trans({}, 'paginator') }}
+                    </a>
+                </li>
+            {% endif %}
+            {% for i in 1..paginator.nbPages %}
+                {% if i == paginator.currentPage %}
+                    <li class="page-item active">
+                        <a class="page-link" href="#" tabindex="-1">
+                            {{ i }} <span class="sr-only">{{ 'current'|trans({}, 'paginator') }}</span>
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ path(route_name, route_parameters|merge(
+                            {
+                                'page': i,
+                            }
+                        )) }}">
+                            {{ i }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+            {% if paginator.hasNextPage %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ path(route_name, route_parameters|merge(
+                        {
+                            'page': paginator.nextPage,
+                        }
+                    )) }}">
+                        <i class="fas fa-arrow-circle-right"></i>
+                        {{ 'action.next'|trans({}, 'paginator') }}
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">
+                        <i class="fas fa-arrow-circle-right"></i>
+                        {{ 'action.next'|trans({}, 'paginator') }}
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
