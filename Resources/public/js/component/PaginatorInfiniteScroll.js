@@ -1,6 +1,7 @@
 const PaginatorInfiniteScroll = class {
     constructor(paginationElement) {
         this.paginationElement = paginationElement
+        this.paginationContent = document.querySelector('.paginator-content')
         this.currentPageItem = this.paginationElement.querySelector('.page-item.active')
         this.previousItem = paginationElement.querySelector('.page-item[data-page-number="previous"]')
         this.nextItem = paginationElement.querySelector('.page-item[data-page-number="next"]')
@@ -14,7 +15,6 @@ const PaginatorInfiniteScroll = class {
 
         window.addEventListener('scroll', () => {
             if (this.isLoadable()) {
-                console.log('ok')
                 this.loadNextPage()
             }
         })
@@ -22,16 +22,14 @@ const PaginatorInfiniteScroll = class {
 
     isLoadable()
     {
-        return false === this.isLoading && true === this.isElementInViewport()
+        return false === this.isLoading && true === this.isBottomElementInViewport()
     }
 
-    isElementInViewport()
+    isBottomElementInViewport()
     {
-        let rect = this.paginationElement.getBoundingClientRect()
+        let rect = this.paginationContent.getBoundingClientRect()
 
         return (
-            rect.top >= 0
-                &&
             rect.left >= 0
                 &&
             rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
@@ -70,13 +68,12 @@ const PaginatorInfiniteScroll = class {
 
                     let data = JSON.parse(httpRequest.responseText)
 
-                    let container = document.querySelector('.paginator-content')
-                    let contentHtml = document.createElement('div')
+                    let contentHtml = document.createElement('ul')
                     contentHtml.innerHTML = data.html
-                    contentHtml.children.forEach((element) => {
-                        container.appendChild(element)
 
-                    })
+                    while (contentHtml.children.length > 0) {
+                        this.paginationContent.appendChild(contentHtml.children[0]);
+                    }
 
                     this.isLoading = false
                 }
