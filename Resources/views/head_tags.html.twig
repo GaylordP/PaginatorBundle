@@ -1,0 +1,33 @@
+{% if 'paginated' in app.request.get('_route')  %}
+    {% if paginator.hasPreviousPage %}
+        <link rel="prev" href="{{ absolute_url(path(app.request.get('_route'), app.request.get('_route_params')|merge(
+            {
+                'page': paginator.previousPage,
+            }
+        ))) }}" />
+    {% endif %}
+    {% if paginator.hasNextPage %}
+        <link rel="next" href="{{ absolute_url(path(app.request.get('_route'), app.request.get('_route_params')|merge(
+            {
+                'page': paginator.nextPage,
+            }
+        ))) }}" />
+    {% endif %}
+    <link rel="canonical" href="{{ absolute_url(path(app.request.get('_route'), app.request.get('_route_params'))) }}" />
+{% else %}
+    {% if paginator.hasPreviousPage %}
+        <link rel="prev" href="{{ absolute_url(path(app.request.get('_route') ~ '_paginated', app.request.get('_route_params')|merge(
+            {
+                'page': paginator.previousPage,
+            }
+        ))) }}" />
+    {% endif %}
+    {% if paginator.hasNextPage %}
+        <link rel="next" href="{{ absolute_url(path(app.request.get('_route') ~ '_paginated', app.request.get('_route_params')|merge(
+            {
+                'page': paginator.nextPage,
+            }
+        ))) }}" />
+    {% endif %}
+    <link rel="canonical" href="{{ absolute_url(path(app.request.get('_route'), app.request.get('_route_params'))) }}" />
+{% endif %}
