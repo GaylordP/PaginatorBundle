@@ -72,7 +72,14 @@ const PaginatorInfiniteScroll = class {
                     contentHtml.innerHTML = data.html
 
                     while (contentHtml.children.length > 0) {
-                        this.paginationContent.appendChild(contentHtml.children[0]);
+                        let paginatorItemId = contentHtml.children[0].getAttribute('data-paginator-item-id')
+                        let findItemId  = this.paginationContent.querySelector('[data-paginator-item-id="' + paginatorItemId + '"]')
+
+                        if (null !== findItemId) {
+                            contentHtml.removeChild(contentHtml.children[0])
+                        } else {
+                            this.paginationContent.appendChild(contentHtml.children[0])
+                        }
                     }
 
                     this.isLoading = false
