@@ -49,7 +49,7 @@ const PaginatorInfiniteScroll = class {
         if (null !== nextPageItem) {
             let loader = document.createElement('div')
             loader.classList.add('text-center')
-            loader.innerHTML = '<i class="fa fa-spinner fa-spin fa-fw"></i>'
+            loader.innerHTML = '<i class="fa fa-spinner fa-spin fa-fw mt-3"></i>'
             this.paginationElement.before(loader)
 
             let httpRequest = new XMLHttpRequest()
